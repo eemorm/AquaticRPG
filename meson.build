@@ -1,4 +1,4 @@
-project('TilemapModule', 'cpp',
+project('AquaticRPG', 'cpp',
   version : '1.0',
   default_options : ['warning_level=3', 'cpp_std=c++20']
 )
@@ -25,7 +25,7 @@ sfml_dep = declare_dependency(
 srcs = ['src/main.cpp']
 
 # Executable
-executable('TilemapModule',
+executable('AquaticRPG',
   srcs,
   dependencies: [sfml_dep],
   include_directories: ['src'],
