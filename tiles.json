@@ -1,0 +1,14 @@
+{
+    "tiles":
+    [
+        {
+            "id": 1,
+            "texture": "dude.png"
+        },
+
+        {
+            "id": 2,
+            "texture": "labtile.png"
+        } 
+    ]
+}
