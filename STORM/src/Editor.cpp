@@ -89,10 +89,8 @@ void Editor::paintTile(
     int y
 )
 {
-
     selectedTile =
         palette.getSelected();
-
 
 
     map.setTile(
@@ -102,19 +100,17 @@ void Editor::paintTile(
         currentLayer
     );
 
-    map.setRotation(
-        x,
-        y,
-        selectedRotation,
-        currentLayer
-    );
+
+    if(currentLayer != Map::Layer::Collision)
+    {
+        map.setRotation(
+            x,
+            y,
+            selectedRotation,
+            currentLayer
+        );
+    }
 }
-
-
-
-
-
-
 
 void Editor::eraseTile(
     int x,
@@ -433,17 +429,42 @@ void Editor::drawLayer(
 
 
 
+            if(layer == Map::Layer::Collision)
+            {
+                sf::RectangleShape collision;
+
+                collision.setSize(
+                    sf::Vector2f(
+                        map.getTileSize(),
+                        map.getTileSize()
+                    )
+                );
+
+                collision.setPosition(
+                    x * map.getTileSize(),
+                    y * map.getTileSize()
+                );
+
+                collision.setFillColor(
+                    sf::Color(255,0,0,100)
+                );
+
+                window.draw(collision);
+
+                continue;
+            }
+
+
+            // Everything below is ONLY normal tiles
+
+            sf::Sprite sprite;
+
+
             const sf::Texture* texture =
                 tileset.getTexture(id);
 
-
-
             if(texture == nullptr)
                 continue;
-
-
-
-            sf::Sprite sprite;
 
 
             sprite.setTexture(
@@ -476,26 +497,6 @@ void Editor::drawLayer(
                     layer
                 )
             );
-
-
-            // Tint collision tiles red
-            if(layer == Map::Layer::Collision)
-            {
-                sprite.setColor(
-                    sf::Color(
-                        255,
-                        80,
-                        80,
-                        180
-                    )
-                );
-            }
-            else
-            {
-                sprite.setColor(
-                    sf::Color::White
-                );
-            }
 
 
             window.draw(sprite);
