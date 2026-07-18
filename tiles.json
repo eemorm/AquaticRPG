@@ -5,10 +5,37 @@
             "id": 1,
             "texture": "dude.png"
         },
-
         {
             "id": 2,
-            "texture": "labtile.png"
-        } 
+            "texture": "labfloor1.png"
+        },
+        {
+            "id": 3,
+            "texture": "labfloor2.png"
+        },
+        {
+            "id": 4,
+            "texture": "labwall1.png"
+        },
+        {
+            "id": 5,
+            "texture": "labwall2.png"
+        },
+        {
+            "id": 6,
+            "texture": "labwall3.png"
+        },
+        {
+            "id": 7,
+            "texture": "labwall4.png"
+        },
+        {
+            "id": 8,
+            "texture": "labwall5.png"
+        },
+        {
+            "id": 9,
+            "texture": "labwall6.png"
+        }
     ]
 }
