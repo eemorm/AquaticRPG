@@ -3,38 +3,34 @@
     [
         {
             "id": 1,
-            "texture": "dude.png"
-        },
-        {
-            "id": 2,
             "texture": "labfloor1.png"
         },
         {
-            "id": 3,
+            "id": 2,
             "texture": "labfloor2.png"
         },
         {
-            "id": 4,
+            "id": 3,
             "texture": "labwall1.png"
         },
         {
-            "id": 5,
+            "id": 4,
             "texture": "labwall2.png"
         },
         {
-            "id": 6,
+            "id": 5,
             "texture": "labwall3.png"
         },
         {
-            "id": 7,
+            "id": 6,
             "texture": "labwall4.png"
         },
         {
-            "id": 8,
+            "id": 7,
             "texture": "labwall5.png"
         },
         {
-            "id": 9,
+            "id": 8,
             "texture": "labwall6.png"
         }
     ]

@@ -16,13 +16,15 @@ private:
 public:
 
     bool load(
-        const std::string& folder
+        const std::string& jsonPath
     );
 
 
     const sf::Texture* getTexture(
         int id
     ) const;
+
+    std::vector<int> getIDs() const;
 
 
     bool hasTile(

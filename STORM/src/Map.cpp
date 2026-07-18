@@ -18,7 +18,9 @@ Map::Map(int width, int height, int tileSize)
     int size = width * height;
 
     ground.resize(size, 0);
+    groundRotation.resize(size, 0);
     objects.resize(size, 0);
+    objectsRotation.resize(size, 0);
     collision.resize(size, 0);
 }
 
@@ -79,7 +81,45 @@ const std::vector<int>& Map::getLayer(Layer layer) const
     return ground;
 }
 
+std::vector<int>& Map::getRotationLayer(
+    Layer layer
+)
+{
+    switch(layer)
+    {
+        case Layer::Ground:
+            return groundRotation;
 
+        case Layer::Objects:
+            return objectsRotation;
+
+        case Layer::Collision:
+            return groundRotation;
+    }
+
+    return groundRotation;
+}
+
+
+
+const std::vector<int>& Map::getRotationLayer(
+    Layer layer
+) const
+{
+    switch(layer)
+    {
+        case Layer::Ground:
+            return groundRotation;
+
+        case Layer::Objects:
+            return objectsRotation;
+
+        case Layer::Collision:
+            return groundRotation;
+    }
+
+    return groundRotation;
+}
 
 int Map::getTile(int x, int y, Layer layer) const
 {
@@ -94,7 +134,26 @@ int Map::getTile(int x, int y, Layer layer) const
     return tiles[y * width + x];
 }
 
+int Map::getRotation(
+    int x,
+    int y,
+    Layer layer
+) const
+{
+    if(x < 0 || y < 0 ||
+       x >= width ||
+       y >= height)
+    {
+        return 0;
+    }
 
+
+    const auto& rotations =
+        getRotationLayer(layer);
+
+
+    return rotations[y * width + x];
+}
 
 void Map::setTile(
     int x,
@@ -114,7 +173,28 @@ void Map::setTile(
     tiles[y * width + x] = tileID;
 }
 
+void Map::setRotation(
+    int x,
+    int y,
+    int rotation,
+    Layer layer
+)
+{
+    if(x < 0 || y < 0 ||
+       x >= width ||
+       y >= height)
+    {
+        return;
+    }
 
+
+    auto& rotations =
+        getRotationLayer(layer);
+
+
+    rotations[y * width + x] =
+        rotation;
+}
 
 void Map::clear()
 {
@@ -150,7 +230,9 @@ bool Map::save(const std::string& path)
 
 
     j["layers"]["ground"] = ground;
+    j["layers"]["groundRotation"] = groundRotation;
     j["layers"]["objects"] = objects;
+    j["layers"]["objectsRotation"] = objectsRotation;
     j["layers"]["collision"] = collision;
 
 
@@ -198,11 +280,17 @@ bool Map::load(const std::string& path)
         j["layers"]["ground"]
         .get<std::vector<int>>();
 
+    groundRotation =
+        j["layers"]["groundRotation"]
+        .get<std::vector<int>>();
 
     objects =
         j["layers"]["objects"]
         .get<std::vector<int>>();
 
+    objectsRotation =
+        j["layers"]["objectsRotation"]
+        .get<std::vector<int>>();
 
     collision =
         j["layers"]["collision"]

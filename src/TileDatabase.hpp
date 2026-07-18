@@ -46,7 +46,7 @@ class TileDatabase
                 sf::Texture texture;
 
                 if(!texture.loadFromFile(
-                    "assets/textures/" + texturePath
+                    "assets/textures/tiles/" + texturePath
                 ))
                 {
                     std::cout

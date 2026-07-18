@@ -39,9 +39,10 @@ private:
     Map::Layer currentLayer =
         Map::Layer::Ground;
 
-
+    
 
     int selectedTile = 1;
+    int selectedRotation = 0;
 
 
 

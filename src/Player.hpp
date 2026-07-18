@@ -23,4 +23,5 @@ class Player
         }
 
         sf::Sprite& getSprite() { return sprite; }
+        void setPosition(sf::Vector2f pos) { position = pos; sprite.setPosition(position); }
 };

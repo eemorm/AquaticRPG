@@ -24,7 +24,9 @@ class GameMap
         int tileSize = 16;
 
         std::vector<int> ground;
+        std::vector<int> groundRotation;
         std::vector<int> objects;
+        std::vector<int> objectsRotation;
         std::vector<int> collision;
     public:
         bool load(
@@ -70,12 +72,42 @@ class GameMap
             ground =
                 j["layers"]["ground"]
                 .get<std::vector<int>>();
+
             objects =
                 j["layers"]["objects"]
                 .get<std::vector<int>>();
+
             collision =
                 j["layers"]["collision"]
                 .get<std::vector<int>>();
+
+
+            int size = width * height;
+
+
+            // Load rotations if they exist
+            if(j["layers"].contains("groundRotation"))
+            {
+                groundRotation =
+                    j["layers"]["groundRotation"]
+                    .get<std::vector<int>>();
+            }
+            else
+            {
+                groundRotation.resize(size, 0);
+            }
+
+
+            if(j["layers"].contains("objectsRotation"))
+            {
+                objectsRotation =
+                    j["layers"]["objectsRotation"]
+                    .get<std::vector<int>>();
+            }
+            else
+            {
+                objectsRotation.resize(size, 0);
+            }
 
             std::cout
                 << "Loaded map "
@@ -112,6 +144,40 @@ class GameMap
                 case Layer::Collision:
                     return collision[index];
             }
+            return 0;
+        }
+
+        int getRotation(
+            int x,
+            int y,
+            Layer layer
+        ) const
+        {
+            if(x < 0 ||
+            y < 0 ||
+            x >= width ||
+            y >= height)
+            {
+                return 0;
+            }
+
+
+            int index = y * width + x;
+
+
+            switch(layer)
+            {
+                case Layer::Ground:
+                    return groundRotation[index];
+
+                case Layer::Objects:
+                    return objectsRotation[index];
+
+                case Layer::Collision:
+                    return 0;
+            }
+
+
             return 0;
         }
 

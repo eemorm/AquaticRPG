@@ -15,12 +15,8 @@ void TilePalette::load(
     tileIDs.clear();
 
 
-    for(int i = 1;
-        i <= tileset.getTileCount();
-        i++)
-    {
-        tileIDs.push_back(i);
-    }
+    tileIDs =
+    tileset.getIDs();
 
 
 

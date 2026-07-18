@@ -61,13 +61,29 @@ class MapRenderer
                         tiles.getTexture(id)
                     );
 
-                    sprite.setPosition(
+                    float size =
                         static_cast<float>(
-                            x * map.getTileSize()
-                        ),
+                            map.getTileSize()
+                        );
 
-                        static_cast<float>(
-                            y * map.getTileSize()
+
+                    sprite.setOrigin(
+                        size / 2.f,
+                        size / 2.f
+                    );
+
+
+                    sprite.setPosition(
+                        x * size + size / 2.f,
+                        y * size + size / 2.f
+                    );
+
+
+                    sprite.setRotation(
+                        map.getRotation(
+                            x,
+                            y,
+                            layer
                         )
                     );
                     window.draw(sprite);

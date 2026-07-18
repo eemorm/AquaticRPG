@@ -4,81 +4,59 @@
 #include <iostream>
 #include <vector>
 #include <algorithm>
+#include <fstream>
 
+#include "nlohmann/json.hpp"
 
-bool Tileset::load(
-    const std::string& folder
-)
+using json = nlohmann::json;
+
+bool Tileset::load(const std::string& jsonPath)
 {
-
     textures.clear();
 
+    std::ifstream file(jsonPath);
 
-    std::vector<std::filesystem::path> files;
+    if(!file)
+        return false;
 
+    json j;
+    file >> j;
 
-    for(auto& file :
-        std::filesystem::directory_iterator(folder))
+    for(const auto& tile : j["tiles"])
     {
+        int id =
+            tile["id"];
 
-        if(file.path().extension() == ".png")
-        {
-            files.push_back(file.path());
-        }
-    }
-
-
-    std::sort(
-        files.begin(),
-        files.end()
-    );
-
-
-
-    int id = 1;
-
-
-    for(auto& path : files)
-    {
+        std::string textureName =
+            tile["texture"];
 
         sf::Texture texture;
 
-
         if(!texture.loadFromFile(
-            path.string()
-        ))
+            "../assets/textures/tiles/" +
+            textureName))
         {
             std::cout
-                << "Failed: "
-                << path
+                << "Failed loading "
+                << textureName
                 << "\n";
 
             continue;
         }
 
-
         texture.setSmooth(false);
-
-
 
         textures[id] =
             std::move(texture);
 
-
-
         std::cout
             << id
             << " = "
-            << path.filename()
+            << textureName
             << "\n";
-
-
-        id++;
     }
 
-
-
-    return !textures.empty();
+    return true;
 }
 
 
@@ -101,7 +79,22 @@ const sf::Texture* Tileset::getTexture(
 }
 
 
+std::vector<int> Tileset::getIDs() const
+{
+    std::vector<int> ids;
 
+    for(const auto& texture : textures)
+    {
+        ids.push_back(texture.first);
+    }
+
+    std::sort(
+        ids.begin(),
+        ids.end()
+    );
+
+    return ids;
+}
 
 
 bool Tileset::hasTile(

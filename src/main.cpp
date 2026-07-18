@@ -16,7 +16,7 @@ int main()
     sf::RenderWindow window(sf::VideoMode(1280, 720), "AquaticRPG");
 
     GameMap map;
-    map.load("maps/lab.json");
+    map.load("maps/labmap.json");
 
     Collision::map = &map;
 
@@ -40,7 +40,7 @@ int main()
     Input::bind("right", sf::Keyboard::D);
 
     Player player(Assets::getTexture("assets/textures/dude.png"));
-    player.getSprite().setPosition({24.f, 56.f});
+    player.setPosition({100.f, 100.f});
 
     while (window.isOpen()) 
     {

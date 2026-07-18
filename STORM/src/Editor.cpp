@@ -18,7 +18,7 @@ mapPath(path)
 {
 
     tileset.load(
-        "../assets/textures/tiles"
+        "../tiles.json"
     );
 
     palette.load(
@@ -47,15 +47,6 @@ mapPath(path)
     layerText.setCharacterSize(20);
     layerText.setFillColor(sf::Color::White);
     layerText.setPosition(1125.f, 10.f);
-
-
-
-    // Load individual tiles
-    if(!tileset.load("../assets/textures/tiles"))
-    {
-        std::cout
-            << "Failed loading tiles\n";
-    }
 
 
     palette.load(
@@ -108,6 +99,13 @@ void Editor::paintTile(
         x,
         y,
         selectedTile,
+        currentLayer
+    );
+
+    map.setRotation(
+        x,
+        y,
+        selectedRotation,
         currentLayer
     );
 }
@@ -233,7 +231,18 @@ void Editor::handleEvent(
         }
 
 
+        if(event.key.code == sf::Keyboard::R)
+        {
+            selectedRotation += 90;
 
+            if(selectedRotation >= 360)
+                selectedRotation = 0;
+
+            std::cout
+                << "Rotation: "
+                << selectedRotation
+                << "\n";
+        }
 
 
         if(event.key.code ==
@@ -384,7 +393,9 @@ void Editor::drawLayerText()
 
 
     layerText.setString(
-        "Layer: " + name
+        "Layer: " + name +
+        "\nRotation: " +
+        std::to_string(selectedRotation)
     );
 
 
@@ -440,12 +451,29 @@ void Editor::drawLayer(
             );
 
 
+            float tileSize =
+                static_cast<float>(
+                    map.getTileSize()
+                );
+
+
+            sprite.setOrigin(
+                tileSize / 2.f,
+                tileSize / 2.f
+            );
+
+
             sprite.setPosition(
-                static_cast<float>(
-                    x * map.getTileSize()
-                ),
-                static_cast<float>(
-                    y * map.getTileSize()
+                x * tileSize + tileSize / 2.f,
+                y * tileSize + tileSize / 2.f
+            );
+
+
+            sprite.setRotation(
+                map.getRotation(
+                    x,
+                    y,
+                    layer
                 )
             );
 
@@ -494,7 +522,12 @@ void Editor::drawGrid()
     float size =
         map.getTileSize();
 
-
+    sf::Color gridColor(
+        255,
+        255,
+        255,
+        50
+    );
 
     for(int x=0;
         x<=map.getWidth();
@@ -506,7 +539,8 @@ void Editor::drawGrid()
                 sf::Vector2f(
                     x*size,
                     0
-                )
+                ),
+                gridColor
             )
         );
 
@@ -516,7 +550,8 @@ void Editor::drawGrid()
                 sf::Vector2f(
                     x*size,
                     map.getHeight()*size
-                )
+                ),
+                gridColor
             )
         );
     }
@@ -533,7 +568,8 @@ void Editor::drawGrid()
                 sf::Vector2f(
                     0,
                     y*size
-                )
+                ),
+                gridColor
             )
         );
 
@@ -543,7 +579,8 @@ void Editor::drawGrid()
                 sf::Vector2f(
                     map.getWidth()*size,
                     y*size
-                )
+                ),
+                gridColor
             )
         );
     }
